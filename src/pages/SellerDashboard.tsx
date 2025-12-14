@@ -7,6 +7,7 @@ import {
   ArrowUpRight, ArrowDownLeft, Camera
 } from 'lucide-react';
 import { DisputesManagement } from '@/components/DisputesManagement';
+import { OrdersTab } from '@/components/OrdersTab';
 
 // Types
 interface Order {
@@ -261,78 +262,7 @@ export function SellerDashboard() {
 
   // ORDERS TAB
   const renderOrders = () => (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">📦 Orders</h2>
-        <div className="flex gap-2">
-          <input type="text" placeholder="Search order..." className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500" />
-          <select className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500">
-            <option>All Orders</option>
-            <option>Pending</option>
-            <option>Active</option>
-            <option>Completed</option>
-          </select>
-        </div>
-      </div>
-
-      {orders.length === 0 ? (
-        <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
-          <ShoppingBag className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-          <h3 className="text-xl font-bold text-gray-600 mb-2">No orders yet</h3>
-          <p className="text-gray-500 mb-6">Share your payment links to start receiving orders!</p>
-          <button 
-            onClick={() => setActiveTab('social')}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition font-semibold"
-          >
-            Create Payment Link
-          </button>
-        </div>
-      ) : (
-        <div className="space-y-4">
-          {orders.map((order) => (
-            <div key={order.id} className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-lg transition">
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <p className="font-bold text-lg">Order #{order.id}</p>
-                  <p className="text-gray-600">Buyer: {order.buyer} • ⭐ {order.rating} ({order.reviews} reviews)</p>
-                </div>
-                <span className={`px-4 py-2 rounded-full text-sm font-semibold border ${getStatusColor(order.status)}`}>
-                  {getStatusLabel(order.status)}
-                </span>
-              </div>
-
-              <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                <p className="text-gray-700 font-semibold mb-2">{order.item}</p>
-                <p className="text-2xl font-bold text-green-600">KES {order.amount.toLocaleString()}</p>
-              </div>
-
-              <div className="flex justify-between items-center">
-                <div className="text-sm text-gray-600">
-                  <p>⏰ {order.status === 'completed' ? 'Completed' : `${order.timeLeft} remaining`}</p>
-                </div>
-                <div className="flex gap-2">
-                  {order.status === 'pending' && (
-                    <>
-                      <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition font-semibold">Accept</button>
-                      <button className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition font-semibold">Reject</button>
-                    </>
-                  )}
-                  {order.status === 'shipped' && (
-                    <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition font-semibold">Update Tracking</button>
-                  )}
-                  {order.status === 'completed' && (
-                    <button className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition font-semibold">View Details</button>
-                  )}
-                  <button className="bg-gray-200 text-gray-700 p-2 rounded-lg hover:bg-gray-300 transition">
-                    <MessageSquare size={20} />
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+    <OrdersTab onCreatePaymentLink={() => setActiveTab('social')} />
   );
 
   // WALLET TAB
