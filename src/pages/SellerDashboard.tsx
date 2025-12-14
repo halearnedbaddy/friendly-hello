@@ -6,6 +6,7 @@ import {
   ChevronRight, Bell, Menu, X, CheckCircle, Clock,
   ArrowUpRight, ArrowDownLeft, Camera
 } from 'lucide-react';
+import { DisputesManagement } from '@/components/DisputesManagement';
 
 // Types
 interface Order {
@@ -403,62 +404,7 @@ export function SellerDashboard() {
   );
 
   // DISPUTES TAB
-  const renderDisputes = () => {
-    const disputes = orders.filter(o => o.status === 'dispute');
-    
-    return (
-      <div className="space-y-6">
-        <h2 className="text-2xl font-bold">⚠️ Disputes</h2>
-
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-            <p className="font-semibold text-green-900">Active Disputes: {disputes.length} | Resolution Rate: 100%</p>
-          </div>
-
-          {disputes.length === 0 ? (
-            <div className="text-center py-12 text-gray-500">
-              <CheckCircle className="w-16 h-16 mx-auto mb-4 text-green-500" />
-              <p className="text-lg font-semibold">No active disputes!</p>
-              <p className="text-sm">Keep up the great work maintaining good seller practices.</p>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {disputes.map((order) => (
-                <div key={order.id} className="bg-red-50 border-l-4 border-red-600 p-6 rounded-lg">
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <p className="font-bold text-lg">Order #{order.id}</p>
-                      <p className="text-gray-700">Buyer: {order.buyer} • Amount: KES {order.amount.toLocaleString()}</p>
-                    </div>
-                    <span className="px-3 py-1 bg-red-200 text-red-800 rounded-full text-sm font-semibold">🚨 OPEN</span>
-                  </div>
-
-                  <div className="bg-gray-50 p-4 rounded mb-4">
-                    <p className="font-semibold text-gray-800 mb-3">Your Response Options:</p>
-                    <div className="space-y-2">
-                      <button className="w-full text-left p-3 bg-white border border-green-300 rounded hover:bg-green-50 transition">
-                        ✅ <span className="font-semibold">Agree & Refund</span> - Refund buyer immediately
-                      </button>
-                      <button className="w-full text-left p-3 bg-white border border-blue-300 rounded hover:bg-blue-50 transition">
-                        🛡️ <span className="font-semibold">Defend Your Case</span> - Upload proof & explanation
-                      </button>
-                      <button className="w-full text-left p-3 bg-white border border-yellow-300 rounded hover:bg-yellow-50 transition">
-                        💬 <span className="font-semibold">Negotiate</span> - Offer partial refund or replacement
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="text-sm text-red-700 font-semibold">
-                    ⏰ Time remaining: {order.timeLeft}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  };
+  const renderDisputes = () => <DisputesManagement />;
 
   // SOCIAL TAB
   const renderSocial = () => (
