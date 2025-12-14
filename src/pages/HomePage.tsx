@@ -210,7 +210,10 @@ export function HomePage() {
                     </li>
                   ))}
                 </ul>
-                <button className="w-full px-6 py-4 bg-gradient-to-r from-green-400 to-emerald-600 text-black rounded-xl font-bold hover:shadow-lg hover:shadow-green-500/50 transition-all duration-300 transform hover:scale-105">
+                <button 
+                  onClick={() => window.location.href = '/seller'}
+                  className="w-full px-6 py-4 bg-gradient-to-r from-green-400 to-emerald-600 text-black rounded-xl font-bold hover:shadow-lg hover:shadow-green-500/50 transition-all duration-300 transform hover:scale-105"
+                >
                   Start Selling Now →
                 </button>
               </div>
