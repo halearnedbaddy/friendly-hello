@@ -131,8 +131,8 @@ export default defineConfig(({ mode }) => {
     },
     define: {
       // Ensure environment variables are available
-      'import.meta.env.VITE_SUPABASE_URL': JSON.stringify(env.VITE_SUPABASE_URL || 'https://riohxkjlfanyzlnewjkt.supabase.co'),
-      'import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY': JSON.stringify(env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJpb2h4a2psZmFueXpsbmV3amt0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgxNTIzMzgsImV4cCI6MjA4MzcyODMzOH0.XP7ayrKWYTQWvoWuVhk5DPTuuSlo4vOVAj0Q7IxK8I4'),
+      'import.meta.env.VITE_SUPABASE_URL': JSON.stringify(env.VITE_SUPABASE_URL || 'https://fvkpommmtuxlhseciaml.supabase.co'),
+      'import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY': JSON.stringify(env.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2a3BvbW1tdHV4bGhzZWNpYW1sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MjAzOTYsImV4cCI6MjA4ODI5NjM5Nn0.DWph9ijyCMhyBSg4oXcY1te3NQfkJDqQYcLqqwqj5as'),
     },
     server: {
       host: "0.0.0.0",

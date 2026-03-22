@@ -103,8 +103,15 @@ export function SupabaseAuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const loginEmail = useCallback(async (email: string, password: string) => {
-    // Try backend first — all registered users live in the PostgreSQL database
-    let backendUnreachable = false;
+    if (useSupabaseOnly) {
+      const response = await supabaseLoginWithEmail(email, password);
+      if (response.success && response.data?.user) {
+        setUser(response.data.user as User);
+        return { success: true };
+      }
+      return { success: false, error: response.error || 'Login failed' };
+    }
+    // Express backend mode
     try {
       const backendResponse = await api.loginWithEmail(email, password);
       if (backendResponse.success && backendResponse.data?.user) {
@@ -118,29 +125,10 @@ export function SupabaseAuthProvider({ children }: { children: ReactNode }) {
         localStorage.setItem('user', JSON.stringify(u));
         return { success: true };
       }
-      // Network-level failure codes mean backend is unreachable — fall through
-      const code = (backendResponse as any)?.code;
-      if (code === 'NETWORK_ERROR' || code === 'TIMEOUT_ERROR' || code === 'EMPTY_RESPONSE' || code === 'INVALID_RESPONSE') {
-        backendUnreachable = true;
-      } else {
-        // Backend responded with a proper error (wrong password, account locked, etc.)
-        return { success: false, error: (backendResponse as any).error || 'Invalid credentials' };
-      }
+      return { success: false, error: (backendResponse as any).error || 'Invalid credentials' };
     } catch {
-      // Backend unreachable — fall through to Supabase
-      backendUnreachable = true;
+      return { success: false, error: 'Login failed' };
     }
-
-    // Fall back to Supabase Auth only if backend was unreachable
-    if (backendUnreachable && useSupabaseOnly) {
-      const response = await supabaseLoginWithEmail(email, password);
-      if (response.success && response.data?.user) {
-        setUser(response.data.user as User);
-        return { success: true };
-      }
-      return { success: false, error: response.error || 'Login failed' };
-    }
-    return { success: false, error: 'Invalid credentials' };
   }, []);
 
   const adminLogin = useCallback(async (email: string, password: string) => {
