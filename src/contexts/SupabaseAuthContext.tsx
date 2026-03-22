@@ -104,6 +104,7 @@ export function SupabaseAuthProvider({ children }: { children: ReactNode }) {
 
   const loginEmail = useCallback(async (email: string, password: string) => {
     // Try backend first — all registered users live in the PostgreSQL database
+    let backendUnreachable = false;
     try {
       const backendResponse = await api.loginWithEmail(email, password);
       if (backendResponse.success && backendResponse.data?.user) {
@@ -117,18 +118,21 @@ export function SupabaseAuthProvider({ children }: { children: ReactNode }) {
         localStorage.setItem('user', JSON.stringify(u));
         return { success: true };
       }
-      // If backend returned an account-level block (locked/suspended), stop here
-      if (backendResponse.data === undefined &&
-          (backendResponse as any)?.code === 'ACCOUNT_LOCKED' ||
-          (backendResponse as any)?.code === 'ACCOUNT_DEACTIVATED') {
-        return { success: false, error: (backendResponse as any).error || 'Login failed' };
+      // Network-level failure codes mean backend is unreachable — fall through
+      const code = (backendResponse as any)?.code;
+      if (code === 'NETWORK_ERROR' || code === 'TIMEOUT_ERROR' || code === 'EMPTY_RESPONSE' || code === 'INVALID_RESPONSE') {
+        backendUnreachable = true;
+      } else {
+        // Backend responded with a proper error (wrong password, account locked, etc.)
+        return { success: false, error: (backendResponse as any).error || 'Invalid credentials' };
       }
     } catch {
       // Backend unreachable — fall through to Supabase
+      backendUnreachable = true;
     }
 
-    // Fall back to Supabase Auth (covers legacy Supabase-only users)
-    if (useSupabaseOnly) {
+    // Fall back to Supabase Auth only if backend was unreachable
+    if (backendUnreachable && useSupabaseOnly) {
       const response = await supabaseLoginWithEmail(email, password);
       if (response.success && response.data?.user) {
         setUser(response.data.user as User);

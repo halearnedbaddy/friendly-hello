@@ -1,27 +1,6 @@
-// Construct API base URL - backend runs on port 8000
-const API_BASE = import.meta.env.VITE_API_BASE_URL || (() => {
-  if (typeof window !== 'undefined') {
-    try {
-      const url = new URL(window.location.href);
-      const hostname = url.hostname;
-      const protocol = url.protocol;
-
-      // In Replit, convert dev domain from 5000 port to 8000 port
-      if (hostname.includes('replit.dev')) {
-        // Handle both -5000- and direct subdomain patterns
-        // We need to ensure we're targeting the correct backend port
-        const backendDomain = hostname.replace('5000', '8000');
-        return `${protocol}//${backendDomain}`;
-      } else if (hostname === 'localhost' || hostname === '127.0.0.1') {
-        return `${protocol}//127.0.0.1:8000`;
-      }
-      return `${protocol}//${hostname}:8000`;
-    } catch {
-      return 'http://127.0.0.1:8000';
-    }
-  }
-  return 'http://127.0.0.1:8000';
-})();
+// API requests use relative URLs so the Vite dev-server proxy forwards
+// /api/* → http://localhost:8000 in development, and the same host in production.
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
 
 import * as supabaseApi from "./supabaseApi";
 
