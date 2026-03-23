@@ -25,6 +25,8 @@ const OrderTrackingPage = lazy(() => import("./pages/OrderTrackingPage").then(m 
 const PaymentSuccessPage = lazy(() => import("./pages/PaymentSuccessPage").then(m => ({ default: m.PaymentSuccessPage })));
 const PaymentCallbackPage = lazy(() => import("./pages/PaymentCallbackPage").then(m => ({ default: m.PaymentCallbackPage })));
 const ReceiptPage = lazy(() => import("./pages/ReceiptPage").then(m => ({ default: m.ReceiptPage })));
+const ForgotPasswordPage = lazy(() => import("./pages/ForgotPasswordPage").then(m => ({ default: m.ForgotPasswordPage })));
+const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage").then(m => ({ default: m.ResetPasswordPage })));
 
 import { PageSkeleton } from "@/components/skeletons";
 
@@ -53,6 +55,8 @@ function App() {
                 <Route path="/store/:storeSlug" element={<StoreFrontPage />} />
                 <Route path="/store/:storeSlug/product/:productId" element={<ProductDetailPage />} />
                 <Route path="/receipt/:receiptId" element={<ReceiptPage />} />
+                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                <Route path="/reset-password" element={<ResetPasswordPage />} />
                 <Route path="/legal" element={<LegalPage />} />
                 <Route path="/info/:slug" element={<InfoPage />} />
                 <Route path="*" element={<NotFoundPage />} />
