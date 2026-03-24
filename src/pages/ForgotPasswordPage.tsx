@@ -28,7 +28,7 @@ export function ForgotPasswordPage() {
     setIsLoading(true);
     try {
       const siteOrigin = window.location.hostname === 'localhost' 
-        ? 'https://id-preview--e75aff97-32da-4c09-b3aa-d4b266cc10ea.lovable.app'
+        ? 'https://payloominstantsafrica.vercel.app'
         : window.location.origin;
       const redirectUrl = `${siteOrigin}/reset-password`;
       
