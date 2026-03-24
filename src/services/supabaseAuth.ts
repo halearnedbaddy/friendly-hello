@@ -190,37 +190,41 @@ export async function registerWithEmail(data: {
   }
 }
 
-// Login with email and password
+// Login with email and password — calls Supabase Auth directly
 export async function loginWithEmail(
   email: string,
   password: string
 ): Promise<AuthResponse> {
   try {
     const emailNormalized = email.trim().toLowerCase();
-    const response = await fetch(`${EDGE_FUNCTION_URL}/login-email`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        apikey: SUPABASE_ANON_KEY,
-      },
-      body: JSON.stringify({ email: emailNormalized, password }),
+
+    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+      email: emailNormalized,
+      password,
     });
 
-    const result = await response.json();
-    
-    if (result.success && result.data?.user) {
-      localStorage.setItem("user", JSON.stringify(result.data.user));
-      
-      // If session is returned, set it in Supabase client
-      if (result.data.session) {
-        await supabase.auth.setSession({
-          access_token: result.data.session.access_token,
-          refresh_token: result.data.session.refresh_token,
-        });
-      }
+    if (authError || !authData.user) {
+      return { success: false, error: authError?.message || "Invalid credentials" };
     }
 
-    return result;
+    const user = {
+      id: authData.user.id,
+      name: authData.user.user_metadata?.name ?? authData.user.email ?? "User",
+      email: authData.user.email,
+      role: (authData.user.user_metadata?.role ?? "buyer") as "buyer" | "seller" | "admin",
+    };
+
+    localStorage.setItem("user", JSON.stringify(user));
+
+    return {
+      success: true,
+      data: {
+        user,
+        session: authData.session
+          ? { access_token: authData.session.access_token, refresh_token: authData.session.refresh_token }
+          : undefined,
+      },
+    };
   } catch (error) {
     console.error("Login email error:", error);
     return { success: false, error: "Login failed" };
