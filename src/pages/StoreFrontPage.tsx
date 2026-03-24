@@ -702,6 +702,7 @@ export function StoreFrontPage() {
         isOpen={cartOpen}
         onClose={() => setCartOpen(false)}
         onPlaceOrder={handlePlaceOrder}
+        storeSlug={storeSlug || ''}
       />
 
       {/* ── CHAT WIDGET ── */}
