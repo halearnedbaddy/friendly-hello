@@ -707,7 +707,7 @@ export function StoreFrontPage() {
 
       {/* ── CHAT WIDGET ── */}
       {store.id && (
-        <StorefrontChatWidget storeId={store.id} storeName={store.name} />
+        <StorefrontChatWidget storeSlug={storeSlug || ''} storeName={store.name} />
       )}
     </div>
   );
