@@ -102,7 +102,7 @@ function isInStock(p: StorefrontProduct): boolean {
 
 export function StoreFrontPage() {
   const { storeSlug } = useParams();
-  const navigate = useNavigate();
+  useNavigate();
   const { formatPrice } = useCurrency();
   const { cart, addToCart } = useCart();
   const { toast } = useToast();
@@ -702,11 +702,12 @@ export function StoreFrontPage() {
         isOpen={cartOpen}
         onClose={() => setCartOpen(false)}
         onPlaceOrder={handlePlaceOrder}
+        storeSlug={storeSlug || ''}
       />
 
       {/* ── CHAT WIDGET ── */}
       {store.id && (
-        <StorefrontChatWidget storeId={store.id} storeName={store.name} />
+        <StorefrontChatWidget storeSlug={storeSlug || ''} storeName={store.name} />
       )}
     </div>
   );

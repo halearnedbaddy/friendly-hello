@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import {
-  CameraIcon, SaveIcon, LoaderIcon, CheckIcon, AlertTriangleIcon,
+  CameraIcon, SaveIcon, LoaderIcon, AlertTriangleIcon,
   GlobeIcon, LockIcon, CheckCircle2, Circle, XCircle, Rocket, Power,
   RefreshCwIcon,
 } from 'lucide-react';
