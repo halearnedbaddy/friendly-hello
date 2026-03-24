@@ -62,13 +62,13 @@ export function SubscriptionPaymentFlow({ open, onClose, planId, billingCycle, m
 
           // Check subscription status
           try {
-            const { data: sub } = await import('@/integrations/supabase/client').then(m => 
-              m.supabase.from('subscriptions')
+          const { data: sub } = await import('@/integrations/supabase/client').then(m => 
+              (m.supabase.from('subscriptions' as any) as any)
                 .select('status')
                 .eq('reference', result.reference)
                 .single()
             );
-            if (sub?.status === 'active') {
+            if ((sub as any)?.status === 'active') {
               clearInterval(pollInterval);
               setStep('success');
             }
