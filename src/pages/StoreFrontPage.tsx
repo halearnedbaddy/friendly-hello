@@ -102,7 +102,7 @@ function isInStock(p: StorefrontProduct): boolean {
 
 export function StoreFrontPage() {
   const { storeSlug } = useParams();
-  const _navigate = useNavigate();
+  useNavigate();
   const { formatPrice } = useCurrency();
   const { cart, addToCart } = useCart();
   const { toast } = useToast();
